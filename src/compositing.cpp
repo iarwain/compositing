@@ -62,8 +62,8 @@ void InitTextures()
   orxConfig_PushSection("Main");
 
   // Gets spot size & inner radius
-  u32Size     = orxConfig_GetU32("SpotSize");
-  fSpotRadius = orxConfig_GetFloat("SpotRadius");
+  u32Size     = orxConfig_GetU32("SpotLightSize");
+  fSpotRadius = orxConfig_GetFloat("SpotLightRadius");
 
   // Pops config section
   orxConfig_PopSection();
@@ -139,6 +139,12 @@ orxSTATUS orxFASTCALL Run()
 {
   orxSTATUS eResult = orxSTATUS_SUCCESS;
 
+  // Screenshot?
+  if(orxInput_IsActive("Screenshot") && orxInput_HasNewStatus("Screenshot"))
+  {
+    // Captures it
+    orxScreenshot_Capture();
+  }
   // Quitting?
   if(orxInput_IsActive("Quit"))
   {
