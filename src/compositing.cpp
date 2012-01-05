@@ -31,10 +31,11 @@ void InitTextures()
   {
     for(u32X = 0; u32X < 256; u32X++)
     {
-      orxU32 u32Index, u32Value;
+      orxU32  u32Index;
+      orxU8   u8Value;
 
       // Gets pixel value
-      u32Value = u32X ^ u32Y;
+      u8Value = (orxU8)(u32X ^ u32Y);
 
       // Gets pixel index
       u32Index = (u32Y * 256 + u32X) * sizeof(orxRGBA);
@@ -42,7 +43,7 @@ void InitTextures()
       // Stores pixel channels
       au8Data[u32Index]     =
       au8Data[u32Index + 1] =
-      au8Data[u32Index + 2] = u32Value;
+      au8Data[u32Index + 2] = u8Value;
       au8Data[u32Index + 3] = 0xFF;
     }
   }
@@ -81,14 +82,15 @@ void InitTextures()
   {
     for(u32X = 0; u32X < u32Size; u32X++)
     {
-      orxU32    u32Index, u32Alpha;
+      orxU32    u32Index;
+      orxU8     u8Alpha;
       orxFLOAT  fDistance;
 
       // Gets pixel distance from center
       fDistance = orxMath_Sqrt(orxMath_Pow(orxU2F(u32X) - (orx2F(0.5f) * orxU2F(u32Size)), orx2F(2.0)) + orxMath_Pow(orxU2F(u32Y) - (orx2F(0.5f) * orxU2F(u32Size)), orx2F(2.0)));
 
       // Gets pixel alpha
-      u32Alpha = orxF2U(orx2F(255.0f) * orxMath_SmoothStep(orx2F(0.5f) * orxU2F(u32Size), fSpotRadius, fDistance));
+      u8Alpha = (orxU8)orxF2U(orx2F(255.0f) * orxMath_SmoothStep(orx2F(0.5f) * orxU2F(u32Size), fSpotRadius, fDistance));
 
       // Gets pixel index
       u32Index = (u32Y * u32Size + u32X) * sizeof(orxRGBA);
@@ -97,7 +99,7 @@ void InitTextures()
       au8Data[u32Index]     =
       au8Data[u32Index + 1] =
       au8Data[u32Index + 2] = 0xFF;
-      au8Data[u32Index + 3] = u32Alpha;
+      au8Data[u32Index + 3] = u8Alpha;
     }
   }
 
