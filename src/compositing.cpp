@@ -3,7 +3,6 @@
 
 
 //! Variables
-orxOBJECT *pstScene = orxNULL;
 
 
 //! Code
@@ -131,7 +130,7 @@ orxSTATUS orxFASTCALL Init()
   orxConfig_PopSection();
 
   // Creates scene
-  pstScene = orxObject_CreateFromConfig("Scene");
+  orxObject_CreateFromConfig("Scene");
 
   // Done!
   return eResult;
