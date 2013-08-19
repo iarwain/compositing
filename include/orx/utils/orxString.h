@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -33,7 +33,7 @@
 
 /**
  * @addtogroup orxString
- * 
+ *
  * String module
  * Module that handles strings
  *
@@ -52,6 +52,9 @@
 #ifdef __orxMSVC__
 
   #pragma warning(disable : 4996)
+
+  #define strtoll   _strtoi64
+  #define strtoull  _strtoui64
 
 #endif /* __orxMSVC__ */
 
@@ -387,7 +390,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
   else if(*pu8Byte < 0xC0)
   {
     /* Logs message */
-    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: multi-byte sequence non-leading byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: multi-byte sequence non-leading byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
     /* Updates result */
     u32Result = orxU32_UNDEFINED;
@@ -396,7 +399,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
   else if(*pu8Byte < 0xC2)
   {
     /* Logs message */
-    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: overlong 2-byte sequence starting with byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: overlong 2-byte sequence starting with byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
     /* Updates result */
     u32Result = orxU32_UNDEFINED;
@@ -416,7 +419,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
     else
     {
       /* Logs message */
-      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 2-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 2-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
       /* Updates result */
       u32Result = orxU32_UNDEFINED;
@@ -443,7 +446,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
       else
       {
         /* Logs message */
-        orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 3-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+        orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 3-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
         /* Updates result */
         u32Result = orxU32_UNDEFINED;
@@ -452,7 +455,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
     else
     {
       /* Logs message */
-      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 3-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 3-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
       /* Updates result */
       u32Result = orxU32_UNDEFINED;
@@ -485,7 +488,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
         else
         {
           /* Logs message */
-          orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+          orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
           /* Updates result */
           u32Result = orxU32_UNDEFINED;
@@ -494,7 +497,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
       else
       {
         /* Logs message */
-        orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+        orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
         /* Updates result */
         u32Result = orxU32_UNDEFINED;
@@ -503,7 +506,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
     else
     {
       /* Logs message */
-      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+      orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: 4-byte sequence non-trailing byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
       /* Updates result */
       u32Result = orxU32_UNDEFINED;
@@ -512,7 +515,7 @@ static orxU32 orxFASTCALL               orxString_GetFirstCharacterCodePoint(con
   else
   {
     /* Logs message */
-    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: invalid out-of-bound byte '%c' (0x%2X) at index %ld.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
+    orxDEBUG_PRINT(orxDEBUG_LEVEL_SYSTEM, "Invalid or non-UTF-8 string at <0x%X>: invalid out-of-bound byte '%c' (0x%2X) at index %d.", _zString, *pu8Byte, *pu8Byte, pu8Byte - (orxU8 *)_zString);
 
     /* Updates result */
     u32Result = orxU32_UNDEFINED;
@@ -637,8 +640,8 @@ static orxINLINE orxSTATUS              orxString_Delete(orxSTRING _zString)
   return orxSTATUS_SUCCESS;
 }
 
-/** Compare two strings, case sensitive. If the first one is smaller than the second, it returns -1,
- * If the second one is bigger than the first, and 0 if they are equals
+/** Compare two strings, case sensitive. If the first one is smaller than the second it returns -1,
+ * 1 if the second one is bigger than the first, and 0 if they are equals
  * @param[in] _zString1    First String to compare
  * @param[in] _zString2    Second string to compare
  * @return -1, 0 or 1 as indicated in the description.
@@ -654,7 +657,7 @@ static orxINLINE orxS32                 orxString_Compare(const orxSTRING _zStri
 }
 
 /** Compare N first character from two strings, case sensitive. If the first one is smaller
- * than the second, it returns -1, If the second one is bigger than the first,
+ * than the second it returns -1, 1 if the second one is bigger than the first
  * and 0 if they are equals.
  * @param[in] _zString1       First String to compare
  * @param[in] _zString2       Second string to compare
@@ -741,7 +744,7 @@ static orxINLINE orxSTATUS              orxString_ToS32Base(const orxSTRING _zSt
 
   /* Convert */
   *_ps32OutValue = strtol(_zString, &pcEnd, (size_t)_u32Base);
-  
+
   /* Valid conversion ? */
   if((pcEnd != _zString) && (_zString[0] != orxCHAR_NULL))
   {
@@ -799,7 +802,7 @@ static orxINLINE orxSTATUS              orxString_ToS32(const orxSTRING _zString
   }
   /* Octal? */
   else if((_zString[0] != orxCHAR_EOL)
-       && ((_zString[0] | 0x20) == '0')
+       && (_zString[0] == '0')
        && ((_zString[1]) >= '0')
        && ((_zString[1]) <= '9'))
   {
@@ -835,7 +838,7 @@ static orxINLINE orxSTATUS              orxString_ToU32Base(const orxSTRING _zSt
 
   /* Convert */
   *_pu32OutValue = strtoul(_zString, &pcEnd, (size_t)_u32Base);
-  
+
   /* Valid conversion ? */
   if((pcEnd != _zString) && (_zString[0] != orxCHAR_NULL))
   {
@@ -893,7 +896,7 @@ static orxINLINE orxSTATUS              orxString_ToU32(const orxSTRING _zString
   }
   /* Octal? */
   else if((_zString[0] != orxCHAR_EOL)
-       && ((_zString[0] | 0x20) == '0')
+       && (_zString[0] == '0')
        && ((_zString[1]) >= '0')
        && ((_zString[1]) <= '9'))
   {
@@ -905,6 +908,194 @@ static orxINLINE orxSTATUS              orxString_ToU32(const orxSTRING _zString
   {
     /* Gets decimal value */
     eResult = orxString_ToU32Base(_zString, 10, _pu32OutValue, _pzRemaining);
+  }
+
+  /* Done! */
+  return eResult;
+}
+
+/** Converts a String to a signed int value using the given base
+ * @param[in]   _zString        String To convert
+ * @param[in]   _u32Base        Base of the read value (generally 10, but can be 16 to read hexa)
+ * @param[out]  _ps64OutValue   Converted value
+ * @param[out]  _pzRemaining    If non null, will contain the remaining string after the number conversion
+ * @return  orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+static orxINLINE orxSTATUS              orxString_ToS64Base(const orxSTRING _zString, orxU32 _u32Base, orxS64 *_ps64OutValue, const orxSTRING *_pzRemaining)
+{
+  orxCHAR    *pcEnd;
+  orxSTATUS   eResult;
+
+  /* Checks */
+  orxASSERT(_ps64OutValue != orxNULL);
+  orxASSERT(_zString != orxNULL);
+
+  /* Convert */
+  *_ps64OutValue = strtoll(_zString, &pcEnd, (size_t)_u32Base);
+
+  /* Valid conversion ? */
+  if((pcEnd != _zString) && (_zString[0] != orxCHAR_NULL))
+  {
+    /* Updates result */
+    eResult = orxSTATUS_SUCCESS;
+  }
+  else
+  {
+    /* Updates result */
+    eResult = orxSTATUS_FAILURE;
+  }
+
+  /* Asks for remaining string? */
+  if(_pzRemaining != orxNULL)
+  {
+    /* Stores it */
+    *_pzRemaining = pcEnd;
+  }
+
+  /* Done! */
+  return eResult;
+}
+
+/** Converts a String to a signed int value, guessing the base
+ * @param[in]   _zString        String To convert
+ * @param[out]  _ps64OutValue   Converted value
+ * @param[out]  _pzRemaining    If non null, will contain the remaining string after the number conversion
+ * @return  orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+static orxINLINE orxSTATUS              orxString_ToS64(const orxSTRING _zString, orxS64 *_ps64OutValue, const orxSTRING *_pzRemaining)
+{
+  orxSTATUS eResult;
+
+  /* Checks */
+  orxASSERT(_ps64OutValue != orxNULL);
+  orxASSERT(_zString != orxNULL);
+
+  /* Hexadecimal? */
+  if((_zString[0] != orxCHAR_EOL)
+  && (_zString[0] == '0')
+  && (_zString[1] != orxCHAR_EOL)
+  && ((_zString[1] | 0x20) == 'x'))
+  {
+    /* Gets hexa value */
+    eResult = orxString_ToS64Base(_zString + 2, 16, _ps64OutValue, _pzRemaining);
+  }
+  /* Binary? */
+  else if((_zString[0] != orxCHAR_EOL)
+       && (_zString[0] == '0')
+       && (_zString[1] != orxCHAR_EOL)
+       && ((_zString[1] | 0x20) == 'b'))
+  {
+    /* Gets binary value */
+    eResult = orxString_ToS64Base(_zString + 2, 2, _ps64OutValue, _pzRemaining);
+  }
+  /* Octal? */
+  else if((_zString[0] != orxCHAR_EOL)
+       && (_zString[0] == '0')
+       && ((_zString[1]) >= '0')
+       && ((_zString[1]) <= '9'))
+  {
+    /* Gets octal value */
+    eResult = orxString_ToS64Base(_zString + 1, 8, _ps64OutValue, _pzRemaining);
+  }
+  /* Decimal */
+  else
+  {
+    /* Gets decimal value */
+    eResult = orxString_ToS64Base(_zString, 10, _ps64OutValue, _pzRemaining);
+  }
+
+  /* Done! */
+  return eResult;
+}
+
+/** Converts a String to an unsigned int value using the given base
+ * @param[in]   _zString        String To convert
+ * @param[in]   _u32Base        Base of the read value (generally 10, but can be 16 to read hexa)
+ * @param[out]  _pu64OutValue   Converted value
+ * @param[out]  _pzRemaining    If non null, will contain the remaining string after the number conversion
+ * @return  orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+static orxINLINE orxSTATUS              orxString_ToU64Base(const orxSTRING _zString, orxU32 _u32Base, orxU64 *_pu64OutValue, const orxSTRING *_pzRemaining)
+{
+  orxCHAR    *pcEnd;
+  orxSTATUS   eResult;
+
+  /* Checks */
+  orxASSERT(_pu64OutValue != orxNULL);
+  orxASSERT(_zString != orxNULL);
+
+  /* Convert */
+  *_pu64OutValue = strtoull(_zString, &pcEnd, (size_t)_u32Base);
+
+  /* Valid conversion ? */
+  if((pcEnd != _zString) && (_zString[0] != orxCHAR_NULL))
+  {
+    /* Updates result */
+    eResult = orxSTATUS_SUCCESS;
+  }
+  else
+  {
+    /* Updates result */
+    eResult = orxSTATUS_FAILURE;
+  }
+
+  /* Asks for remaining string? */
+  if(_pzRemaining != orxNULL)
+  {
+    /* Stores it */
+    *_pzRemaining = pcEnd;
+  }
+
+  /* Done! */
+  return eResult;
+}
+
+/** Converts a String to an unsigned int value, guessing the base
+ * @param[in]   _zString        String To convert
+ * @param[out]  _pu64OutValue   Converted value
+ * @param[out]  _pzRemaining    If non null, will contain the remaining string after the number conversion
+ * @return  orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+static orxINLINE orxSTATUS              orxString_ToU64(const orxSTRING _zString, orxU64 *_pu64OutValue, const orxSTRING *_pzRemaining)
+{
+  orxSTATUS eResult;
+
+  /* Checks */
+  orxASSERT(_pu64OutValue != orxNULL);
+  orxASSERT(_zString != orxNULL);
+
+  /* Hexadecimal? */
+  if((_zString[0] != orxCHAR_EOL)
+  && (_zString[0] == '0')
+  && (_zString[1] != orxCHAR_EOL)
+  && ((_zString[1] | 0x20) == 'x'))
+  {
+    /* Gets hexa value */
+    eResult = orxString_ToU64Base(_zString + 2, 16, _pu64OutValue, _pzRemaining);
+  }
+  /* Binary? */
+  else if((_zString[0] != orxCHAR_EOL)
+       && (_zString[0] == '0')
+       && (_zString[1] != orxCHAR_EOL)
+       && ((_zString[1] | 0x20) == 'b'))
+  {
+    /* Gets binary value */
+    eResult = orxString_ToU64Base(_zString + 2, 2, _pu64OutValue, _pzRemaining);
+  }
+  /* Octal? */
+  else if((_zString[0] != orxCHAR_EOL)
+       && (_zString[0] == '0')
+       && ((_zString[1]) >= '0')
+       && ((_zString[1]) <= '9'))
+  {
+    /* Gets octal value */
+    eResult = orxString_ToU64Base(_zString + 1, 8, _pu64OutValue, _pzRemaining);
+  }
+  /* Decimal */
+  else
+  {
+    /* Gets decimal value */
+    eResult = orxString_ToU64Base(_zString, 10, _pu64OutValue, _pzRemaining);
   }
 
   /* Done! */
@@ -926,18 +1117,18 @@ static orxINLINE orxSTATUS              orxString_ToFloat(const orxSTRING _zStri
   orxASSERT(_pfOutValue != orxNULL);
   orxASSERT(_zString != orxNULL);
 
-  /* Linux / Mac / GP2X / Wii / IPhone / Android / MSVC? */
-#if defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxGP2X__) || defined(__orxWII__) || defined (__orxIPHONE__) || defined(__orxMSVC__) || defined(__orxANDROID__)
+  /* Linux / Mac / iOS / Android / MSVC? */
+#if defined(__orxLINUX__) || defined(__orxMAC__) || defined (__orxIOS__) || defined(__orxMSVC__) || defined(__orxANDROID__)
 
   /* Converts it */
   *_pfOutValue = (orxFLOAT)strtod(_zString, &pcEnd);
 
-#else /* __orxLINUX__ || __orxMAC__ || __orxGP2X__ || __orxWII__ || __orxIPHONE__ || __orxMSVC__ || __orxANDROID__ */
+#else /* __orxLINUX__ || __orxMAC__ || __orxIOS__ || __orxMSVC__ || __orxANDROID__ */
 
   /* Converts it */
   *_pfOutValue = strtof(_zString, &pcEnd);
 
-#endif /* __orxLINUX__ || __orxMAC__ || __orxGP2X__ || __orxWII__ || __orxIPHONE__ || __orxMSVC__ || __orxANDROID__ */
+#endif /* __orxLINUX__ || __orxMAC__ || __orxIOS__ || __orxMSVC__ || __orxANDROID__ */
 
   /* Valid conversion ? */
   if((pcEnd != _zString) && (_zString[0] != orxCHAR_NULL))
@@ -1318,6 +1509,30 @@ static orxINLINE orxS32 orxCDECL        orxString_NPrint(orxSTRING _zDstString, 
 
   /* Done! */
   return s32Result;
+}
+
+/** Gets the extension from a file name
+ * @param[in]  _zFileName     Concerned file name
+ * @return Extension if exists, orxSTRING_EMPTY otherwise
+ */
+static orxINLINE const orxSTRING        orxString_GetExtension(const orxSTRING _zFileName)
+{
+  orxS32          s32Index, s32NextIndex;
+  const orxSTRING zResult;
+
+  /* Checks */
+  orxASSERT(_zFileName != orxNULL);
+
+  /* Finds last '.' */
+  for(s32Index = orxString_SearchCharIndex(_zFileName, '.', 0);
+      (s32Index >= 0) && ((s32NextIndex = orxString_SearchCharIndex(_zFileName, '.', s32Index + 1)) > 0);
+      s32Index = s32NextIndex);
+
+  /* Updates result */
+  zResult = (s32Index >= 0) ? _zFileName + s32Index + 1 : orxSTRING_EMPTY;
+
+  /* Done! */
+  return zResult;
 }
 
 #ifdef __orxMSVC__

@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -50,6 +50,7 @@ typedef enum __orxPLUGIN_FUNCTION_BASE_ID_RENDER_t
   orxPLUGIN_FUNCTION_BASE_ID_RENDER_INIT = 0,
   orxPLUGIN_FUNCTION_BASE_ID_RENDER_EXIT,
   orxPLUGIN_FUNCTION_BASE_ID_RENDER_GET_WORLD_POSITION,
+  orxPLUGIN_FUNCTION_BASE_ID_RENDER_GET_SCREEN_POSITION,
 
   orxPLUGIN_FUNCTION_BASE_ID_RENDER_NUMBER,
 

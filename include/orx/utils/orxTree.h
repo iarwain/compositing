@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -53,10 +53,10 @@
  */
 typedef struct __orxTREE_NODE_t
 {
-  struct __orxTREE_NODE_t *pstParent;           /**< Parent node pointer : 4 */
-  struct __orxTREE_NODE_t *pstChild;            /**< First child node pointer : 8 */
-  struct __orxTREE_NODE_t *pstSibling;          /**< Next sibling node pointer : 12 */
-  struct __orxTREE_t      *pstTree;             /**< Associated tree pointer : 16 */
+  struct __orxTREE_NODE_t *pstParent;           /**< Parent node pointer : 4/8 */
+  struct __orxTREE_NODE_t *pstChild;            /**< First child node pointer : 8/16 */
+  struct __orxTREE_NODE_t *pstSibling;          /**< Next sibling node pointer : 12/24 */
+  struct __orxTREE_t      *pstTree;             /**< Associated tree pointer : 16/32 */
 
 } orxTREE_NODE;
 
@@ -64,8 +64,8 @@ typedef struct __orxTREE_NODE_t
  */
 typedef struct __orxTREE_t
 {
-  orxTREE_NODE *pstRoot;                        /**< Root node pointer : 4 */
-  orxU32        u32Counter;                     /**< Node counter : 8 */
+  orxTREE_NODE *pstRoot;                        /**< Root node pointer : 4/8 */
+  orxU32        u32Counter;                     /**< Node counter : 8/12 */
 
 } orxTREE;
 
@@ -89,6 +89,13 @@ extern orxDLLAPI orxSTATUS orxFASTCALL          orxTree_AddRoot(orxTREE *_pstTre
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL          orxTree_AddParent(orxTREE_NODE *_pstRefNode, orxTREE_NODE *_pstNode);
+
+/** Adds a node as a sibling of another one
+ * @param[in]   _pstRefNode                     Reference node (add as a sibling of this one)
+ * @param[in]   _pstNode                        Node to add
+ * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL          orxTree_AddSibling(orxTREE_NODE *_pstRefNode, orxTREE_NODE *_pstNode);
 
 /** Adds a node as a child of another one
  * @param[in]   _pstRefNode                     Reference node (add as a child of this one)

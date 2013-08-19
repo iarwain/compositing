@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -51,9 +51,12 @@
 #include "anim/orxAnimSet.h"
 
 #include "core/orxClock.h"
+#include "core/orxCommand.h"
 #include "core/orxConfig.h"
+#include "core/orxConsole.h"
 #include "core/orxEvent.h"
 #include "core/orxLocale.h"
+#include "core/orxResource.h"
 #include "core/orxSystem.h"
 
 #include "debug/orxDebug.h"
@@ -84,9 +87,12 @@
 #include "memory/orxMemory.h"
 
 #include "object/orxFrame.h"
+#include "object/orxFX.h"
+#include "object/orxFXPointer.h"
 #include "object/orxObject.h"
 #include "object/orxSpawner.h"
 #include "object/orxStructure.h"
+#include "object/orxTimeLine.h"
 
 #include "plugin/orxPlugin.h"
 #include "plugin/orxPluginCore.h"
@@ -96,8 +102,6 @@
 #include "physics/orxPhysics.h"
 
 #include "render/orxCamera.h"
-#include "render/orxFX.h"
-#include "render/orxFXPointer.h"
 #include "render/orxRender.h"
 #include "render/orxShader.h"
 #include "render/orxShaderPointer.h"

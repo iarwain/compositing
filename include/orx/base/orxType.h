@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -32,7 +32,7 @@
 
 /**
  * @addtogroup orxType
- * 
+ *
  * Base types
  *
  * @{
@@ -98,6 +98,12 @@
     typedef signed    long long   orxS64;
 
   #endif /* __orxGCC__ */
+  #ifdef __orxLLVM__
+
+    typedef unsigned  long long   orxU64;
+    typedef signed    long long   orxS64;
+
+  #endif /* __orxLLVM__ */
   #ifdef __orxMSVC__
 
     typedef unsigned  __int64     orxU64;
@@ -107,12 +113,12 @@
 
 #else /* __orxWINDOWS__ */
 
-  /* Linux / Mac / iPhone / Android / Wii */
-  #if defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxGP2X__) || defined(__orxWII__) || defined(__orxIPHONE__) || defined(__orxANDROID__) || defined(__orxANDROID_NATIVE__)
+  /* Linux / Mac / iOS / Android */
+  #if defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxIOS__) || defined(__orxANDROID__)
 
     typedef void *                orxHANDLE;
 
-    #ifdef __orxX86_64__
+    #if defined(__orxX86_64__) || defined(__orxPPC64__)
 
     typedef unsigned  long long   orxU64;
     typedef unsigned  int         orxU32;
@@ -126,7 +132,7 @@
 
     typedef unsigned  int         orxBOOL;
 
-    #else /* __orxX86_64__ */
+    #else /* __orxX86_64__ || __orxPPC64__ */
 
     typedef unsigned  long long   orxU64;
     typedef unsigned  long        orxU32;
@@ -140,7 +146,7 @@
 
     typedef unsigned  long        orxBOOL;
 
-    #endif /* __orxX86_64__ */
+    #endif /* __orxX86_64__ || __orxPPC64__ */
 
     typedef float                 orxFLOAT;
     typedef double                orxDOUBLE;
@@ -155,11 +161,25 @@
 
     #define orxENUM_NONE          0xFFFFFFFFL
 
-  #endif /* __orxLINUX__ || __orxMAC__ || __orxGP2X__ || __orxWII__ || __orxIPHONE__ || __orxANDROID__ || __orxANDROID_NATIVE__ */
+  #endif /* __orxLINUX__ || __orxMAC__ || __orxIOS__ || __orxANDROID__ */
 
 #endif /* __orxWINDOWS__ */
 
 /* *** Misc constants *** */
+
+/* *** Seek offset constants *** */
+typedef enum __orxSEEK_OFFSET_WHENCE_t
+{
+  orxSEEK_OFFSET_WHENCE_START = 0,
+  orxSEEK_OFFSET_WHENCE_CURRENT,
+  orxSEEK_OFFSET_WHENCE_END,
+
+  orxSEEK_OFFSET_WHENCE_NUMBER,
+
+  orxSEEK_OFFSET_WHENCE_NONE = orxENUM_NONE
+
+} orxSEEK_OFFSET_WHENCE;
+
 
 /* *** Boolean constants *** */
 #define orxFALSE                  ((orxBOOL)(1 != 1))
@@ -169,6 +189,12 @@
 /* *** Float constants *** */
 static const orxFLOAT             orxFLOAT_0            = orx2F(0.0f);
 static const orxFLOAT             orxFLOAT_1            = orx2F(1.0f);
+static const orxFLOAT             orxFLOAT_MAX          = orx2F(3.402823466e+38f);
+
+/* *** Double constants *** */
+static const orxDOUBLE            orxDOUBLE_0           = orx2D(0.0);
+static const orxDOUBLE            orxDOUBLE_1           = orx2D(1.0);
+static const orxDOUBLE            orxDOUBLE_MAX         = orx2D(1.7976931348623158e+308);
 
 
 /* *** Undefined constants *** */
@@ -183,24 +209,31 @@ static const orxHANDLE            orxHANDLE_UNDEFINED   = (orxHANDLE)(-1);
 extern orxDLLAPI const orxSTRING  orxSTRING_EMPTY;
 extern orxDLLAPI const orxSTRING  orxSTRING_TRUE;
 extern orxDLLAPI const orxSTRING  orxSTRING_FALSE;
+extern orxDLLAPI const orxSTRING  orxSTRING_EOL;
+
 #define orxCHAR_NULL              '\0'
 #define orxCHAR_CR                '\r'
 #define orxCHAR_LF                '\n'
+#define orxCHAR_EOL               '\n'
 #define orxCHAR_ASCII_NUMBER      128
-
-extern orxDLLAPI const orxCHAR    orxCHAR_EOL;
-extern orxDLLAPI const orxSTRING  orxSTRING_EOL;
 
 
 /* *** Directory separators *** */
 
-extern orxDLLAPI const orxCHAR    orxCHAR_DIRECTORY_SEPARATOR_WINDOWS;
-extern orxDLLAPI const orxCHAR    orxCHAR_DIRECTORY_SEPARATOR_LINUX;
-extern orxDLLAPI const orxSTRING  orxSTRING_DIRECTORY_SEPARATOR_WINDOWS;
-extern orxDLLAPI const orxSTRING  orxSTRING_DIRECTORY_SEPARATOR_LINUX;
-
-extern orxDLLAPI const orxCHAR    orxCHAR_DIRECTORY_SEPARATOR;
 extern orxDLLAPI const orxSTRING  orxSTRING_DIRECTORY_SEPARATOR;
+
+#define orxCHAR_DIRECTORY_SEPARATOR_WINDOWS   '\\'
+#define orxCHAR_DIRECTORY_SEPARATOR_LINUX     '/'
+
+#if defined(__orxWINDOWS__)
+
+#define orxCHAR_DIRECTORY_SEPARATOR           '\\'
+
+#elif defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxIOS__) || defined(__orxANDROID__)
+
+#define orxCHAR_DIRECTORY_SEPARATOR           '/'
+
+#endif
 
 
 /* *** Status defines *** */

@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -45,13 +45,13 @@
 
 
 #include "orxInclude.h"
-#include "render/orxFX.h"
+#include "object/orxFX.h"
 #include "object/orxStructure.h"
 
 
 /** Misc defines
  */
-#define orxFXPOINTER_KU32_FX_NUMBER             4
+#define orxFXPOINTER_KU32_FX_NUMBER             8
 
 
 /** Internal FXPointer structure */
@@ -155,7 +155,7 @@ extern orxDLLAPI orxSTATUS orxFASTCALL          orxFXPointer_AddDelayedFXFromCon
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL          orxFXPointer_AddUniqueDelayedFXFromConfig(orxFXPOINTER *_pstFXPointer, const orxSTRING _zFXConfigID, orxFLOAT _fDelay);
 
-/** Removes an FX using using its config ID
+/** Removes an FX using its config ID
  * @param[in]   _pstFXPointer Concerned FXPointer
  * @param[in]   _zFXConfigID  Config ID of the FX to remove
  * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
@@ -182,7 +182,7 @@ extern orxDLLAPI orxFLOAT orxFASTCALL           orxFXPointer_GetTime(const orxFX
  * @param[in]   _fTime        Time to set
  * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL        orxFXPointer_SetTime(orxFXPOINTER *_pstFXPointer, orxFLOAT _fTime);
+extern orxDLLAPI orxSTATUS orxFASTCALL        	orxFXPointer_SetTime(orxFXPOINTER *_pstFXPointer, orxFLOAT _fTime);
 
 #endif /* _orxFXPointer_H_ */
 

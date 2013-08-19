@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -49,7 +49,7 @@
 /** Misc
  */
 
-#if defined(__orxIPHONE__)
+#if defined(__orxIOS__)
 
   #define orxSCREENSHOT_KZ_DEFAULT_DIRECTORY_NAME "../Documents"
   #define orxSCREENSHOT_KZ_DEFAULT_BASE_NAME      "screenshot-"

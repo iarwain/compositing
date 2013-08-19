@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -119,11 +119,29 @@ extern orxDLLAPI orxFRAME *orxFASTCALL        orxFrame_Create(orxU32 _u32Flags);
 extern orxDLLAPI orxSTATUS orxFASTCALL        orxFrame_Delete(orxFRAME *_pstFrame);
 
 
-/** Sets a frame parent
+/** Sets frame parent
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _pstParent      Parent frame to set
  */
 extern orxDLLAPI void orxFASTCALL             orxFrame_SetParent(orxFRAME *_pstFrame, orxFRAME * _pstParent);
+
+/** Get frame parent
+ * @param[in]   _pstFrame       Concerned frame
+ * @return orxFRAME / orxNULL
+ */
+extern orxDLLAPI orxFRAME *orxFASTCALL        orxFrame_GetParent(const orxFRAME *_pstFrame);
+
+/** Gets frame first child
+ * @param[in]   _pstFrame       Concerned frame
+ * @return orxFRAME / orxNULL
+ */
+extern orxDLLAPI orxFRAME *orxFASTCALL        orxFrame_GetChild(const orxFRAME *_pstFrame);
+
+/** Gets frame next sibling
+ * @param[in]   _pstFrame       Concerned frame
+ * @return orxFRAME / orxNULL
+ */
+extern orxDLLAPI orxFRAME *orxFASTCALL        orxFrame_GetSibling(const orxFRAME *_pstFrame);
 
 /** Is a root child?
  * @param[in]   _pstFrame       Concerned frame
@@ -132,21 +150,21 @@ extern orxDLLAPI void orxFASTCALL             orxFrame_SetParent(orxFRAME *_pstF
 extern orxDLLAPI orxBOOL orxFASTCALL          orxFrame_IsRootChild(const orxFRAME *_pstFrame);
 
 
-/** Sets a frame position
+/** Sets frame position
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @param[in]   _pvPos          Position to set
  */
 extern orxDLLAPI void orxFASTCALL             orxFrame_SetPosition(orxFRAME *_pstFrame, orxFRAME_SPACE _eSpace, const orxVECTOR *_pvPos);
 
-/** Sets a frame rotation
+/** Sets frame rotation
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @param[in]   _fAngle         Angle to set (radians)
  */
 extern orxDLLAPI void orxFASTCALL             orxFrame_SetRotation(orxFRAME *_pstFrame, orxFRAME_SPACE _eSpace, orxFLOAT _fAngle);
 
-/** Sets a frame scale
+/** Sets frame scale
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @param[in]   _pvScale        Scale to set
@@ -154,7 +172,7 @@ extern orxDLLAPI void orxFASTCALL             orxFrame_SetRotation(orxFRAME *_ps
 extern orxDLLAPI void orxFASTCALL             orxFrame_SetScale(orxFRAME *_pstFrame, orxFRAME_SPACE _eSpace, const orxVECTOR *_pvScale);
 
 
-/** Gets a frame position
+/** Gets frame position
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @param[out]  _pvPos          Position of the given frame
@@ -162,14 +180,14 @@ extern orxDLLAPI void orxFASTCALL             orxFrame_SetScale(orxFRAME *_pstFr
  */
 extern orxDLLAPI orxVECTOR *orxFASTCALL       orxFrame_GetPosition(orxFRAME *_pstFrame, orxFRAME_SPACE _eSpace, orxVECTOR *_pvPos);
 
-/** Gets a frame rotation
+/** Gets frame rotation
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @return Rotation of the given frame (radians)
  */
 extern orxDLLAPI orxFLOAT orxFASTCALL         orxFrame_GetRotation(orxFRAME *_pstFrame, orxFRAME_SPACE _eSpace);
 
-/** Gets a frame scale
+/** Gets frame scale
  * @param[in]   _pstFrame       Concerned frame
  * @param[in]   _eSpace         Coordinate space system to use
  * @param[out]  _pvScale        Scale

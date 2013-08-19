@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -154,7 +154,7 @@ typedef enum __orxKEYBOARD_KEY_t
   orxKEYBOARD_KEY_QUOTE,
   orxKEYBOARD_KEY_SLASH,
   orxKEYBOARD_KEY_BACKSLASH,
-  orxKEYBOARD_KEY_TILDE,
+  orxKEYBOARD_KEY_BACKQUOTE,
   orxKEYBOARD_KEY_EQUAL,
   orxKEYBOARD_KEY_DASH,
   orxKEYBOARD_KEY_NUMBER,
@@ -162,27 +162,6 @@ typedef enum __orxKEYBOARD_KEY_t
   orxKEYBOARD_KEY_NONE = orxENUM_NONE
 
 } orxKEYBOARD_KEY;
-
-/** Event enum
- */
-typedef enum __orxKEYBOARD_EVENT_t
-{
-  orxKEYBOARD_EVENT_KEY_PRESSED = 0,
-  orxKEYBOARD_EVENT_KEY_RELEASED,
-
-  orxKEYBOARD_EVENT_NUMBER,
-
-  orxKEYBOARD_EVENT_NONE = orxENUM_NONE
-
-} orxKEYBOARD_EVENT;
-
-/** Contact event payload
- */
-typedef struct __orxKEYBOARD_EVENT_PAYLOAD_t
-{
-  orxKEYBOARD_KEY   eKey;                     /**< Key : 4 */
-
-} orxKEYBOARD_EVENT_PAYLOAD;
 
 
 /***************************************************************************
@@ -212,17 +191,17 @@ extern orxDLLAPI void orxFASTCALL             orxKeyboard_Exit();
  */
 extern orxDLLAPI orxBOOL orxFASTCALL          orxKeyboard_IsKeyPressed(orxKEYBOARD_KEY _eKey);
 
-/** Returns orxTRUE if there are keypresses waiting in the input buffer.
- * @return orxTRUE if keys have been pressed, else orxFALSE
+/** Gets the next key from the keyboard buffer and removes it from there
+ * @return orxKEYBOARD_KEY, orxKEYBOARD_KEY_NONE if the buffer is empty
  */
-extern orxDLLAPI orxBOOL orxFASTCALL          orxKeyboard_Hit();
+extern orxDLLAPI orxKEYBOARD_KEY orxFASTCALL  orxKeyboard_ReadKey();
 
-/** Gets the next character from the keyboard buffer
- * @return orxKEYBOARD_KEY
+/** Gets the next UTF-8 encoded string from the keyboard buffer and removes it from there
+ * @return UTF-8 encoded string
  */
-extern orxDLLAPI orxKEYBOARD_KEY orxFASTCALL  orxKeyboard_Read();
+extern orxDLLAPI const orxSTRING orxFASTCALL  orxKeyboard_ReadString();
 
-/** Empties the keyboard buffer.
+/** Empties the keyboard buffer (both keys and chars)
  */
 extern orxDLLAPI void orxFASTCALL             orxKeyboard_ClearBuffer();
 

@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -60,6 +60,11 @@
 #define orxVIEWPORT_KU32_FLAG_ALIGN_BOTTOM    0x80000000  /**< Bottom vertical alignment */
 
 
+/** Misc defined
+ */
+#define orxVIEWPORT_KU32_MAX_TEXTURE_NUMBER   16
+
+
 /** Internal Viewport structure */
 typedef struct __orxVIEWPORT_t                orxVIEWPORT;
 
@@ -102,17 +107,27 @@ extern orxDLLAPI orxSTATUS orxFASTCALL        orxViewport_Delete(orxVIEWPORT *_p
 extern orxDLLAPI void orxFASTCALL             orxViewport_SetAlignment(orxVIEWPORT *_pstViewport, orxU32 _u32AlignFlags);
 
 
-/** Sets a viewport texture
+/** Sets a viewport texture list
  * @param[in]   _pstViewport    Concerned viewport
- * @param[in]   _pstTexture     Texture to associate with the viewport
+ * @param[in]   _u32TextureNumber Number of textures to associate with the viewport
+ * @param[in]   _apstTextureList List of textures to associate with the viewport
  */
-extern orxDLLAPI void orxFASTCALL             orxViewport_SetTexture(orxVIEWPORT *_pstViewport, orxTEXTURE *_pstTexture);
+extern orxDLLAPI void orxFASTCALL             orxViewport_SetTextureList(orxVIEWPORT *_pstViewport, orxU32 _u32TextureNumber, orxTEXTURE **_apstTextureList);
 
-/** Gets a viewport texture
+/** Gets a viewport texture list
  * @param[in]   _pstViewport    Concerned viewport
- * @return      Associated orxTEXTURE / orxNULL
+ * @param[in]   _u32TextureNumber Number of textures to be retrieved
+ * @param[out]  _apstTextureList List of textures associated with the viewport
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxTEXTURE *orxFASTCALL      orxViewport_GetTexture(const orxVIEWPORT *_pstViewport);
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxViewport_GetTextureList(const orxVIEWPORT *_pstViewport, orxU32 _u32TextureNumber, orxTEXTURE **_apstTextureList);
+
+/** Gets a viewport texture counter
+ * @param[in]   _pstViewport    Concerned viewport
+ * @return      Number of textures associated with the viewport
+ */
+extern orxDLLAPI orxU32 orxFASTCALL           orxViewport_GetTextureCounter(const orxVIEWPORT *_pstViewport);
+
 
 
 /** Sets a viewport background color
@@ -175,7 +190,7 @@ extern orxDLLAPI orxCAMERA *orxFASTCALL       orxViewport_GetCamera(const orxVIE
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL        orxViewport_AddShader(orxVIEWPORT *_pstViewport, const orxSTRING _zShaderConfigID);
 
-/** Removes a shader using using its config ID
+/** Removes a shader using its config ID
  * @param[in]   _pstViewport      Concerned viewport
  * @param[in]   _zShaderConfigID Config ID of the shader to remove
  * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE

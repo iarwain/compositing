@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -59,7 +59,9 @@ typedef enum __orxMODULE_ID_t
   orxMODULE_ID_BODY,
   orxMODULE_ID_CAMERA,
   orxMODULE_ID_CLOCK,
+  orxMODULE_ID_COMMAND,
   orxMODULE_ID_CONFIG,
+  orxMODULE_ID_CONSOLE,
   orxMODULE_ID_DISPLAY,
   orxMODULE_ID_EVENT,
   orxMODULE_ID_FILE,
@@ -82,6 +84,7 @@ typedef enum __orxMODULE_ID_t
   orxMODULE_ID_PLUGIN,
   orxMODULE_ID_PROFILER,
   orxMODULE_ID_RENDER,
+  orxMODULE_ID_RESOURCE,
   orxMODULE_ID_SCREENSHOT,
   orxMODULE_ID_SHADER,
   orxMODULE_ID_SHADERPOINTER,
@@ -93,6 +96,7 @@ typedef enum __orxMODULE_ID_t
   orxMODULE_ID_SYSTEM,
   orxMODULE_ID_TEXT,
   orxMODULE_ID_TEXTURE,
+  orxMODULE_ID_TIMELINE,
   orxMODULE_ID_VIEWPORT,
 
   orxMODULE_ID_NUMBER,
@@ -134,9 +138,6 @@ extern orxDLLAPI void orxFASTCALL         orxModule_AddDependency(orxMODULE_ID _
  * @param[in]   _eDependID                Module ID of the optionally needed module
  */
 extern orxDLLAPI void orxFASTCALL         orxModule_AddOptionalDependency(orxMODULE_ID _eModuleID, orxMODULE_ID _eDependID);
-
-/** Updates dependencies for all modules */
-extern orxDLLAPI void orxFASTCALL         orxModule_UpdateDependencies();
 
 /** Calls a module setup callback
  * @param[in]   _eModuleID                Concerned module ID

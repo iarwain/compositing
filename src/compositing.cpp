@@ -9,13 +9,10 @@
 void InitTextures()
 {
   orxU32      u32X, u32Y, u32Size;
-  orxFLOAT    fScreenWidth, fScreenHeight, fSpotRadius;
+  orxFLOAT    fSpotRadius;
   orxTEXTURE *pstTexture;
   orxBITMAP  *pstBitmap;
   orxU8      *au8Data;
-
-  // Gets screen size
-  orxDisplay_GetScreenSize(&fScreenWidth, &fScreenHeight);
 
   // Creates background texture
   pstBitmap  = orxDisplay_CreateBitmap(256, 256);
@@ -52,11 +49,6 @@ void InitTextures()
 
   // Frees pixel buffer
   orxMemory_Free(au8Data);
-
-  // Creates lightmap texture
-  pstBitmap   = orxDisplay_CreateBitmap(orxF2U(fScreenWidth), orxF2U(fScreenHeight));
-  pstTexture  = orxTexture_Create();
-  orxTexture_LinkBitmap(pstTexture, pstBitmap, "LightMapTexture");
 
   // Pushes main config section
   orxConfig_PushSection("Main");

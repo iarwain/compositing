@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -32,7 +32,7 @@
 
 /**
  * @addtogroup orxBody
- * 
+ *
  * Body Module
  * Allows to creates and handle physical bodies
  * They are used as container with associated properties
@@ -141,6 +141,13 @@ extern orxDLLAPI orxBODY_PART *orxFASTCALL    orxBody_AddPart(orxBODY *_pstBody,
  */
 extern orxDLLAPI orxBODY_PART *orxFASTCALL    orxBody_AddPartFromConfig(orxBODY *_pstBody, const orxSTRING _zConfigID);
 
+/** Removes a part using its config ID
+ * @param[in]   _pstBody        Concerned body
+ * @param[in]   _zConfigID      Config ID of the part to remove
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_RemovePartFromConfig(orxBODY *_pstBody, const orxSTRING _zConfigID);
+
 /** Gets next body part
  * @param[in]   _pstBody        Concerned body
  * @param[in]   _pstBodyPart    Current body part (orxNULL to get the first one)
@@ -153,6 +160,18 @@ extern orxDLLAPI orxBODY_PART *orxFASTCALL    orxBody_GetNextPart(const orxBODY 
  * @return      orxSTRING / orxNULL
  */
 extern orxDLLAPI const orxSTRING orxFASTCALL  orxBody_GetPartName(const orxBODY_PART *_pstBodyPart);
+
+/** Gets a body part definition (matching current part status)
+ * @param[in]   _pstBodyPart    Concerned body part
+ * @return      orxBODY_PART_DEF / orxNULL
+ */
+extern orxDLLAPI const orxBODY_PART_DEF *orxFASTCALL orxBody_GetPartDef(const orxBODY_PART *_pstBodyPart);
+
+/** Gets a body part body (ie. owner)
+ * @param[in]   _pstBodyPart    Concerned body part
+ * @return      orxBODY / orxNULL
+ */
+extern orxDLLAPI orxBODY *orxFASTCALL         orxBody_GetPartBody(const orxBODY_PART *_pstBodyPart);
 
 /** Removes a body part
  * @param[in]   _pstBodyPart    Concerned body part
@@ -239,6 +258,13 @@ extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetAngularVelocity(orxBODY
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetCustomGravity(orxBODY *_pstBody, const orxVECTOR *_pvCustomGravity);
 
+/** Sets a body fixed rotation
+ * @param[in]   _pstBody        Concerned body
+ * @param[in]   _bFixed         Fixed / not fixed
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetFixedRotation(orxBODY *_pstBody, orxBOOL _bFixed);
+
 /** Gets a body position
  * @param[in]   _pstBody        Concerned body
  * @param[out]  _pvPosition     Position to get
@@ -254,10 +280,18 @@ extern orxDLLAPI orxFLOAT orxFASTCALL         orxBody_GetRotation(const orxBODY 
 
 /** Gets a body speed
  * @param[in]   _pstBody        Concerned body
- * @param[out]   _pvSpeed       Speed to get
+ * @param[out]  _pvSpeed        Speed to get
  * @return      Body speed / orxNULL
  */
 extern orxDLLAPI orxVECTOR *orxFASTCALL       orxBody_GetSpeed(const orxBODY *_pstBody, orxVECTOR *_pvSpeed);
+
+/** Gets a body speed at a specified world position
+ * @param[in]   _pstBody        Concerned body
+ * @param[in]   _pvPosition     Concerned world position
+ * @param[out]  _pvSpeed        Speed to get
+ * @return      Body speed / orxNULL
+ */
+extern orxDLLAPI orxVECTOR *orxFASTCALL       orxBody_GetSpeedAtWorldPosition(const orxBODY *_pstBody, const orxVECTOR *_pvPosition, orxVECTOR *_pvSpeed);
 
 /** Gets a body angular velocity
  * @param[in]   _pstBody        Concerned body
@@ -272,13 +306,19 @@ extern orxDLLAPI orxFLOAT orxFASTCALL         orxBody_GetAngularVelocity(const o
  */
 extern orxDLLAPI orxVECTOR *orxFASTCALL       orxBody_GetCustomGravity(const orxBODY *_pstBody, orxVECTOR *_pvCustomGravity);
 
+/** Is a body using a fixed rotation
+ * @param[in]   _pstBody        Concerned body
+ * @return      orxTRUE if fixed rotation, orxFALSE otherwise
+ */
+extern orxDLLAPI orxBOOL orxFASTCALL          orxBody_IsFixedRotation(const orxBODY *_pstBody);
+
 /** Gets a body mass
  * @param[in]   _pstBody        Concerned body
  * @return      Body mass
  */
 extern orxDLLAPI orxFLOAT orxFASTCALL         orxBody_GetMass(const orxBODY *_pstBody);
 
-/** Gets a body center of mass
+/** Gets a body center of mass (object space)
  * @param[in]   _pstBody        Concerned body
  * @param[out]  _pvMassCenter   Mass center to get
  * @return      Mass center / orxNULL
@@ -375,6 +415,28 @@ extern orxDLLAPI orxBOOL orxFASTCALL          orxBody_IsPartSolid(const orxBODY_
  * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetPartSolid(orxBODY_PART *_pstBodyPart, orxBOOL _bSolid);
+
+
+/** Enables a (revolute) body joint motor
+ * @param[in]   _pstBodyJoint   Concerned body joint
+ * @param[in]   _bEnable        Enable / Disable
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_EnableMotor(orxBODY_JOINT *_pstBodyJoint, orxBOOL _bEnable);
+
+/** Sets a (revolute) body joint motor speed
+ * @param[in]   _pstBodyJoint   Concerned body joint
+ * @param[in]   _fSpeed         Speed
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetJointMotorSpeed(orxBODY_JOINT *_pstBodyJoint, orxFLOAT _fSpeed);
+
+/** Sets a (revolute) body joint maximum motor torque
+ * @param[in]   _pstBodyJoint   Concerned body joint
+ * @param[in]   _fMaxTorque     Maximum motor torque
+ * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxBody_SetJointMaxMotorTorque(orxBODY_JOINT *_pstBodyJoint, orxFLOAT _fMaxTorque);
 
 
 /** Issues a raycast to test for potential bodies in the way

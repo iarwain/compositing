@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -143,7 +143,7 @@ extern orxDLLAPI const orxSHADER *orxFASTCALL   orxShaderPointer_GetShader(const
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL          orxShaderPointer_AddShaderFromConfig(orxSHADERPOINTER *_pstShaderPointer, const orxSTRING _zShaderConfigID);
 
-/** Removes a shader using using its config ID
+/** Removes a shader using its config ID
  * @param[in]   _pstShaderPointer Concerned ShaderPointer
  * @param[in]   _zShaderConfigID  Config ID of the shader to remove
  * @return      orxSTATUS_SUCCESS / orxSTATUS_FAILURE

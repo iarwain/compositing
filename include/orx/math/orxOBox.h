@@ -1,6 +1,6 @@
 /* Orx - Portable Game Engine
  *
- * Copyright (c) 2008-2011 Orx-Project
+ * Copyright (c) 2008-2013 Orx-Project
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -193,11 +193,11 @@ static orxINLINE orxOBOX *                    orxOBox_2DRotate(orxOBOX *_pstRes,
   }
 
   /* Updates axis */
-  orxVector_Set(&(_pstRes->vX), (fCos * _pstRes->vX.fX) - (fSin * _pstRes->vX.fY), (fSin * _pstRes->vX.fX) + (fCos * _pstRes->vX.fY), _pstRes->vX.fZ);
-  orxVector_Set(&(_pstRes->vY), (fCos * _pstRes->vY.fX) - (fSin * _pstRes->vY.fY), (fSin * _pstRes->vY.fX) + (fCos * _pstRes->vY.fY), _pstRes->vY.fZ);
+  orxVector_Set(&(_pstRes->vX), (fCos * _pstOp->vX.fX) - (fSin * _pstOp->vX.fY), (fSin * _pstOp->vX.fX) + (fCos * _pstOp->vX.fY), _pstOp->vX.fZ);
+  orxVector_Set(&(_pstRes->vY), (fCos * _pstOp->vY.fX) - (fSin * _pstOp->vY.fY), (fSin * _pstOp->vY.fX) + (fCos * _pstOp->vY.fY), _pstOp->vY.fZ);
 
   /* Updates pivot */
-  orxVector_Set(&(_pstRes->vPivot), (fCos * _pstRes->vPivot.fX) - (fSin * _pstRes->vPivot.fY), (fSin * _pstRes->vPivot.fX) + (fCos * _pstRes->vPivot.fY), _pstRes->vPivot.fZ);
+  orxVector_Set(&(_pstRes->vPivot), (fCos * _pstOp->vPivot.fX) - (fSin * _pstOp->vPivot.fY), (fSin * _pstOp->vPivot.fX) + (fCos * _pstOp->vPivot.fY), _pstOp->vPivot.fZ);
 
   /* Done! */
   return _pstRes;
@@ -290,17 +290,17 @@ static orxINLINE orxBOOL                      orxOBox_ZAlignedTestIntersection(c
   /* Checks */
   orxASSERT(_pstBox1 != orxNULL);
   orxASSERT(_pstBox2 != orxNULL);
-  orxASSERT((_pstBox1->vZ.fX == orxFLOAT_0) && (_pstBox1->vZ.fX == orxFLOAT_0));
-  orxASSERT((_pstBox1->vZ.fY == orxFLOAT_0) && (_pstBox1->vZ.fY == orxFLOAT_0));
-  orxASSERT((_pstBox1->vZ.fZ >= orxFLOAT_0) && (_pstBox1->vZ.fZ >= orxFLOAT_0));
+  orxASSERT(_pstBox1->vZ.fX == orxFLOAT_0);
+  orxASSERT(_pstBox1->vZ.fY == orxFLOAT_0);
+  orxASSERT(_pstBox1->vZ.fZ >= orxFLOAT_0);
 
   /* Z intersected? */
   if((_pstBox2->vPosition.fZ + _pstBox2->vZ.fZ >= _pstBox1->vPosition.fZ)
   && (_pstBox2->vPosition.fZ <= _pstBox1->vPosition.fZ + _pstBox1->vZ.fZ))
   {
-    orxU32            i;
-    orxVECTOR         vOrigin1, vOrigin2, *pvOrigin1 = &vOrigin1, *pvOrigin2 = &vOrigin2, *pvTemp;
-    const orxOBOX *pstBox1 = _pstBox1, *pstBox2 = _pstBox2, *pstTemp;
+    orxU32          i;
+    orxVECTOR       vOrigin1, vOrigin2, *pvOrigin1 = &vOrigin1, *pvOrigin2 = &vOrigin2, *pvTemp;
+    const orxOBOX  *pstBox1 = _pstBox1, *pstBox2 = _pstBox2, *pstTemp;
 
     /* Computes boxes origins */
     vOrigin1.fX = _pstBox1->vPosition.fX - pstBox1->vPivot.fX;
