@@ -113,9 +113,9 @@
 /*** Module functions *** */
 
 /** Inits the random seed
- * @param[in]   _s32Seed                        Value to use as seed for random number generation
+ * @param[in]   _u32Seed                        Value to use as seed for random number generation
  */
-extern orxDLLAPI void orxFASTCALL     orxMath_InitRandom(orxS32 _s32Seed);
+extern orxDLLAPI void orxFASTCALL     orxMath_InitRandom(orxU32 _u32Seed);
 
 /** Gets a random orxFLOAT value
  * @param[in]   _fMin                           Minimum boundary (inclusive)
@@ -151,6 +151,16 @@ extern orxDLLAPI orxU64 orxFASTCALL   orxMath_GetRandomU64(orxU64 _u64Min, orxU6
  * @return      Random value
  */
 extern orxDLLAPI orxS64 orxFASTCALL   orxMath_GetRandomS64(orxS64 _s64Min, orxS64 _s64Max);
+
+/** Gets the current random seeds
+ * @param[out]  _au32Seeds[4]                   Current seeds
+ */
+extern orxDLLAPI void orxFASTCALL     orxMath_GetRandomSeeds(orxU32 _au32Seeds[4]);
+
+/** Sets (replaces) the current random seeds
+ * @param[in]   _au32Seeds[4]                   Seeds to set
+ */
+extern orxDLLAPI void orxFASTCALL     orxMath_SetRandomSeeds(const orxU32 _au32Seeds[4]);
 
 
 /*** Inlined functions *** */

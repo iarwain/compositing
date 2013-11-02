@@ -50,29 +50,58 @@
 /** Resource handlers
  */
 typedef const orxSTRING (orxFASTCALL *orxRESOURCE_FUNCTION_LOCATE)(const orxSTRING _zStorage, const orxSTRING _zName, orxBOOL _bRequireExistence);
-typedef orxHANDLE       (orxFASTCALL *orxRESOURCE_FUNCTION_OPEN)(const orxSTRING _zLocation, orxBOOL _bEraseMode);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_GET_TIME)(const orxSTRING _zPath);
+typedef orxHANDLE       (orxFASTCALL *orxRESOURCE_FUNCTION_OPEN)(const orxSTRING _zPath, orxBOOL _bEraseMode);
 typedef void            (orxFASTCALL *orxRESOURCE_FUNCTION_CLOSE)(orxHANDLE _hResource);
-typedef orxS32          (orxFASTCALL *orxRESOURCE_FUNCTION_GET_SIZE)(orxHANDLE _hResource);
-typedef orxS32          (orxFASTCALL *orxRESOURCE_FUNCTION_SEEK)(orxHANDLE _hResource, orxS32 _s32Offset, orxSEEK_OFFSET_WHENCE _eWhence);
-typedef orxS32          (orxFASTCALL *orxRESOURCE_FUNCTION_TELL)(orxHANDLE _hResource);
-typedef orxS32          (orxFASTCALL *orxRESOURCE_FUNCTION_READ)(orxHANDLE _hResource, orxS32 _s32Size, void *_pBuffer);
-typedef orxS32          (orxFASTCALL *orxRESOURCE_FUNCTION_WRITE)(orxHANDLE _hResource, orxS32 _s32Size, const void *_pBuffer);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_GET_SIZE)(orxHANDLE _hResource);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_SEEK)(orxHANDLE _hResource, orxS64 _s64Offset, orxSEEK_OFFSET_WHENCE _eWhence);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_TELL)(orxHANDLE _hResource);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_READ)(orxHANDLE _hResource, orxS64 _s64Size, void *_pBuffer);
+typedef orxS64          (orxFASTCALL *orxRESOURCE_FUNCTION_WRITE)(orxHANDLE _hResource, orxS64 _s64Size, const void *_pBuffer);
 
 /** Resource type info
  */
 typedef struct __orxRESOURCE_TYPE_INFO_t
 {
-  const orxSTRING               zTag;
-  orxRESOURCE_FUNCTION_LOCATE   pfnLocate;
-  orxRESOURCE_FUNCTION_OPEN     pfnOpen;
-  orxRESOURCE_FUNCTION_CLOSE    pfnClose;
-  orxRESOURCE_FUNCTION_GET_SIZE pfnGetSize;
-  orxRESOURCE_FUNCTION_SEEK     pfnSeek;
-  orxRESOURCE_FUNCTION_TELL     pfnTell;
-  orxRESOURCE_FUNCTION_READ     pfnRead;
-  orxRESOURCE_FUNCTION_WRITE    pfnWrite;
+  const orxSTRING               zTag;                     /**< Unique tag, mandatory */
+  orxRESOURCE_FUNCTION_LOCATE   pfnLocate;                /**< Locate function, mandatory */
+  orxRESOURCE_FUNCTION_GET_TIME pfnGetTime;               /**< GetTime function, optional, for hotload support */
+  orxRESOURCE_FUNCTION_OPEN     pfnOpen;                  /**< Open function, mandatory */
+  orxRESOURCE_FUNCTION_CLOSE    pfnClose;                 /**< Close function, mandatory */
+  orxRESOURCE_FUNCTION_GET_SIZE pfnGetSize;               /**< GetSize function, mandatory */
+  orxRESOURCE_FUNCTION_SEEK     pfnSeek;                  /**< Seek function, mandatory */
+  orxRESOURCE_FUNCTION_TELL     pfnTell;                  /**< Tell function, mandatory */
+  orxRESOURCE_FUNCTION_READ     pfnRead;                  /**< Read function, mandatory */
+  orxRESOURCE_FUNCTION_WRITE    pfnWrite;                 /**< Write function, optional, for write support */
 
 } orxRESOURCE_TYPE_INFO;
+
+/** Event enum
+ */
+typedef enum __orxRESOURCE_EVENT_t
+{
+  orxRESOURCE_EVENT_UPDATE = 0,
+  orxRESOURCE_EVENT_ADD,
+  orxRESOURCE_EVENT_REMOVE,
+
+  orxRESOURCE_EVENT_NUMBER,
+
+  orxRESOURCE_EVENT_NONE = orxENUM_NONE
+
+} orxRESOURCE_EVENT;
+
+/** Event payload
+ */
+typedef struct __orxRESOURCE_EVENT_PAYLOAD_t
+{
+  orxS64                        s64Time;                  /**< New resource time : 8 */
+  const orxSTRING               zLocation;                /**< Resource location : 12 / 16 */
+  const orxSTRING               zPath;                    /**< Resource path : 16 / 24 */
+  const orxRESOURCE_TYPE_INFO  *pstTypeInfo;              /**< Type info : 20 / 32 */
+  orxU32                        u32GroupID;               /**< Group ID : 24 / 36 */
+  orxU32                        u32NameID;                /**< Name ID : 28 / 40 */
+
+} orxRESOURCE_EVENT_PAYLOAD;
 
 
 /** Resource module setup
@@ -87,6 +116,18 @@ extern orxDLLAPI orxSTATUS orxFASTCALL                    orxResource_Init();
 /** Exits from the resource module
  */
 extern orxDLLAPI void orxFASTCALL                         orxResource_Exit();
+
+
+/** Gets number of resource groups
+ * @return Number of resource groups
+ */
+extern orxDLLAPI orxU32 orxFASTCALL                       orxResource_GetGroupCounter();
+
+/** Gets resource group at given index
+ * @param[in] _u32Index         Index of resource group
+ * @return Resource group if index is valid, orxNULL otherwise
+ */
+extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetGroup(orxU32 _u32Index);
 
 
 /** Adds a storage for a given resource group
@@ -104,24 +145,6 @@ extern orxDLLAPI orxSTATUS orxFASTCALL                    orxResource_AddStorage
  */
 extern orxDLLAPI orxSTATUS orxFASTCALL                    orxResource_RemoveStorage(const orxSTRING _zGroup, const orxSTRING _zStorage);
 
-/** Reloads storage from config
- * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
- */
-extern orxDLLAPI orxSTATUS orxFASTCALL                    orxResource_ReloadStorage();
-
-
-/** Gets number of resource groups
- * @return Number of resource groups
- */
-extern orxDLLAPI orxU32 orxFASTCALL                       orxResource_GetGroupCounter();
-
-/** Gets resource group at given index
- * @param[in] _u32Index         Index of resource group
- * @return Resource group if index is valid, orxNULL otherwise
- */
-extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetGroup(orxU32 _u32Index);
-
-
 /** Gets number of storages for a given resource group
  * @param[in] _zGroup           Concerned resource group
  * @return Number of storages for this resource group
@@ -134,6 +157,11 @@ extern orxDLLAPI orxU32 orxFASTCALL                       orxResource_GetStorage
  * @return Storage if index is valid, orxNULL otherwise
  */
 extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetStorage(const orxSTRING _zGroup, orxU32 _u32Index);
+
+/** Reloads storage from config
+ * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL                    orxResource_ReloadStorage();
 
 
 /** Gets the location of an *existing* resource for a given group, location gets cached if found
@@ -151,12 +179,24 @@ extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_Locate(con
  */
 extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetLocation(const orxSTRING _zGroup, const orxSTRING _zStorage, const orxSTRING _zName);
 
-/** Gets the resource name from a location
+/** Gets the resource path from a location
  * @param[in] _zLocation        Location of the concerned resource
- * @return Name string if valid, orxSTRING_EMPTY otherwise
+ * @return Path string if valid, orxSTRING_EMPTY otherwise
  */
-extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetName(const orxSTRING _zLocation);
+extern orxDLLAPI const orxSTRING orxFASTCALL              orxResource_GetPath(const orxSTRING _zLocation);
 
+/** Gets the resource type from a location
+ * @param[in] _zLocation        Location of the concerned resource
+ * @return orxRESOURCE_TYPE_INFO if valid, orxNULL otherwise
+ */
+extern orxDLLAPI const orxRESOURCE_TYPE_INFO *orxFASTCALL orxResource_GetType(const orxSTRING _zLocation);
+
+
+/** Gets the time of last modification of a resource
+ * @param[in] _zLocation        Location of the concerned resource
+ * @return Time of last modification, in seconds since epoch, if found, 0 otherwise
+ */
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_GetTime(const orxSTRING _zLocation);
 
 /** Opens the resource at the given location
  * @param[in] _zLocation        Location of the resource to open
@@ -174,37 +214,37 @@ extern orxDLLAPI void orxFASTCALL                         orxResource_Close(orxH
  * @param[in] _hResource        Concerned resource
  * @return Size of the resource, in bytes
  */
-extern orxDLLAPI orxS32 orxFASTCALL                       orxResource_GetSize(orxHANDLE _hResource);
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_GetSize(orxHANDLE _hResource);
 
 /** Seeks a position in a given resource (moves cursor)
  * @param[in] _hResource        Concerned resource
- * @param[in] _s32Offset        Number of bytes to offset from 'origin'
+ * @param[in] _s64Offset        Number of bytes to offset from 'origin'
  * @param[in] _eWhence          Starting point for the offset computation (start, current position or end)
  * @return Absolute cursor position
  */
-extern orxDLLAPI orxS32 orxFASTCALL                       orxResource_Seek(orxHANDLE _hResource, orxS32 _s32Offset, orxSEEK_OFFSET_WHENCE _eWhence);
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_Seek(orxHANDLE _hResource, orxS64 _s64Offset, orxSEEK_OFFSET_WHENCE _eWhence);
 
 /** Tells the position of the cursor in a given resource
  * @param[in] _hResource        Concerned resource
  * @return Position (offset), in bytes
  */
-extern orxDLLAPI orxS32 orxFASTCALL                       orxResource_Tell(orxHANDLE _hResource);
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_Tell(orxHANDLE _hResource);
 
 /** Reads data from a resource
  * @param[in] _hResource        Concerned resource
- * @param[in] _s32Size          Size to read (in bytes)
+ * @param[in] _s64Size          Size to read (in bytes)
  * @param[out] _pBuffer         Buffer that will be filled by the read data
  * @return Size of the read data, in bytes
  */
-extern orxDLLAPI orxS32 orxFASTCALL                       orxResource_Read(orxHANDLE _hResource, orxS32 _s32Size, void *_pBuffer);
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_Read(orxHANDLE _hResource, orxS64 _s64Size, void *_pBuffer);
 
 /** Writes data to a resource
  * @param[in] _hResource        Concerned resource
- * @param[in] _s32Size          Size to write (in bytes)
+ * @param[in] _s64Size          Size to write (in bytes)
  * @param[out] _pBuffer         Buffer that will be written
  * @return Size of the written data, in bytes, 0 if nothing could be written, -1 if this resource type doesn't have any write support
  */
-extern orxDLLAPI orxS32 orxFASTCALL                       orxResource_Write(orxHANDLE _hResource, orxS32 _s32Size, const void *_pBuffer);
+extern orxDLLAPI orxS64 orxFASTCALL                       orxResource_Write(orxHANDLE _hResource, orxS64 _s64Size, const void *_pBuffer);
 
 
 /** Registers a new resource type

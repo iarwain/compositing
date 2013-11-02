@@ -32,7 +32,7 @@
 
 /**
  * @addtogroup orxViewport
- * 
+ *
  * Viewport module
  * Allows to creates and handle viewports.
  * Viewports are structures associated to cameras and used for rendering.
@@ -48,6 +48,7 @@
 #include "core/orxClock.h"
 #include "render/orxCamera.h"
 #include "render/orxShaderPointer.h"
+#include "display/orxDisplay.h"
 #include "display/orxTexture.h"
 
 
@@ -216,6 +217,19 @@ extern orxDLLAPI orxBOOL orxFASTCALL          orxViewport_IsShaderEnabled(const 
 extern orxDLLAPI const orxSHADERPOINTER *orxFASTCALL orxViewport_GetShaderPointer(const orxVIEWPORT *_pstViewport);
 
 
+/** Sets a viewport blend mode (only used when has active shaders attached)
+ * @param[in]   _pstViewport    Concerned viewport
+ * @param[in]   _eBlendMode     Blend mode to set
+ */
+extern orxDLLAPI orxSTATUS orxFASTCALL        orxViewport_SetBlendMode(orxVIEWPORT *_pstViewport, orxDISPLAY_BLEND_MODE _eBlendMode);
+
+/** Gets a viewport blend mode
+ * @param[in]   _pstViewport    Concerned viewport
+ * @return orxDISPLAY_BLEND_MODE
+ */
+extern orxDLLAPI orxDISPLAY_BLEND_MODE orxFASTCALL orxViewport_GetBlendMode(const orxVIEWPORT *_pstViewport);
+
+
 /** Sets a viewport position
  * @param[in]   _pstViewport    Concerned viewport
  * @param[in]   _fX             X axis position (top left corner)
@@ -279,6 +293,12 @@ extern orxDLLAPI orxAABOX *orxFASTCALL        orxViewport_GetBox(const orxVIEWPO
  * @return      Correction ratio value
  */
 extern orxDLLAPI orxFLOAT orxFASTCALL         orxViewport_GetCorrectionRatio(const orxVIEWPORT *_pstViewport);
+
+/** Gets viewport config name
+ * @param[in]   _pstViewport    Concerned viewport
+ * @return      orxSTRING / orxSTRING_EMPTY
+ */
+extern orxDLLAPI const orxSTRING orxFASTCALL  orxViewport_GetName(const orxVIEWPORT *_pstViewport);
 
 #endif /* _orxVIEWPORT_H_ */
 
